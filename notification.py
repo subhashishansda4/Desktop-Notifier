@@ -21,6 +21,7 @@ def drink_water():
         )
         time.sleep(1800)
 
+# source - https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en
 def news_headlines():
     url = "https://news.google.com/news/rss"
     xml_data = urlopen(url).read()
