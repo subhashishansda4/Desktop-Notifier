@@ -7,6 +7,8 @@ Created on Fri Mar  4 16:53:05 2022
 
 from plyer import notification
 import time
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
 
 def drink_water():
     title = "Time to Get Hydrated !!"
@@ -19,5 +21,26 @@ def drink_water():
         )
         time.sleep(1800)
 
+def news_headlines():
+    url = "https://news.google.com/news/rss"
+    xml_data = urlopen(url).read()
+    urlopen(url).close()
+    
+    sp = BeautifulSoup(xml_data, 'xml')
+    news_list = sp.find_all('item')
+    news_list = news_list[0:5]
+    
+    for news in news_list:    
+        message = news.title.text + '\n Published on: ' + news.pubDate.text
+        print(message)
+        print("")
+        
+    for news in news_list:
+        notification.notify(
+            title = "Top Headlines of Today !!",
+            message = news.title.text + '\nPublished on: ' + news.pubDate.text,
+            timeout = 5
+        )
+
 if __name__ == "__main__":
-    drink_water()
+    news_headlines()
